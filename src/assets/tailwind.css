@@ -1,0 +1,48 @@
+@import "tailwindcss";
+
+@font-face {
+    font-family: 'Podkova';
+    src: url('/fonts/Podkova.ttf');
+}
+
+@font-face {
+    font-family: 'Podkova';
+    src: url('/fonts/Podkova-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'Podkova-ExtraBold';
+    src: url('/fonts/Podkova-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'Podkova-Bold';
+    src: url('/fonts/Podkova-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'Podkova-SemiBold';
+    src: url('/fonts/Podkova-SemiBold.ttf');
+}
+
+@font-face {
+    font-family: 'Podkova-Medium';
+    src: url('/fonts/Podkova-Medium.ttf');
+}
+
+@theme {
+    --font-podkova: "Podkova", sans-serif;
+    --font-podkova-extrabold: "Podkova-ExtraBold", sans-serif;
+    --font-podkova-bold: "Podkova-Bold", sans-serif;
+    --font-podkova-semibold: "Podkova-SemiBold", sans-serif;
+    --font-podkova-medium: "Podkova-Medium", sans-serif;
+
+    --color-latar: #f3f4f6;
+    --color-teks: #374151; 
+    --color-teks-samping: #6b7280;
+    --color-garis: #e5e7eb; 
+    --color-hijau: #38FF4C; 
+    --color-merah: #ef4444; 
+    --color-biru: #3b82f6;
+    --color-kuning: #f59e0b;
+}

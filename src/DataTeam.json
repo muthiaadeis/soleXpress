@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Dewi Anggraeni",
+    "position": "CEO & Founder",
+    "photo": "https://randomuser.me/api/portraits/women/65.jpg"
+  },
+  {
+    "id": 2,
+    "name": "Rian Setiawan",
+    "position": "Head of Marketing",
+    "photo": "https://randomuser.me/api/portraits/men/43.jpg"
+  },
+  {
+    "id": 3,
+    "name": "Intan Pratiwi",
+    "position": "Product Manager",
+    "photo": "https://randomuser.me/api/portraits/women/24.jpg"
+  },
+  {
+    "id": 4,
+    "name": "Agus Santoso",
+    "position": "Lead Developer",
+    "photo": "https://randomuser.me/api/portraits/men/31.jpg"
+  },
+  {
+    "id": 5,
+    "name": "Sari Melati",
+    "position": "Customer Support",
+    "photo": "https://randomuser.me/api/portraits/women/12.jpg"
+  }
+]

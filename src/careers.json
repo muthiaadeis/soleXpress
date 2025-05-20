@@ -1,0 +1,24 @@
+[
+    {
+      "id": 1,
+      "title": "Digital Marketing Specialist",
+      "description": "Bergabunglah untuk meningkatkan visibilitas merek sepatu kami secara digital.",
+      "location": "Jakarta",
+      "type": "Full-Time"
+    },
+    {
+      "id": 2,
+      "title": "Customer Service Representative",
+      "description": "Bantu pelanggan kami menemukan sepatu yang sempurna.",
+      "location": "Bandung",
+      "type": "Part-Time"
+    },
+    {
+      "id": 3,
+      "title": "Warehouse Coordinator",
+      "description": "Kelola dan pantau pengiriman sepatu secara efisien.",
+      "location": "Surabaya",
+      "type": "Full-Time"
+    }
+  ]
+  
