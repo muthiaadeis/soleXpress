@@ -9,7 +9,7 @@ const FAQPage = () => {
   };
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="font-podkova p-6 max-w-4xl mx-auto">
       <h1 className="text-3xl font-bold mb-8 text-center">Pertanyaan yang Sering Diajukan</h1>
       <div className="space-y-4">
         {faqs.map((faq, index) => (

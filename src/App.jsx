@@ -9,6 +9,7 @@ import { Route, Routes } from "react-router-dom";
 import Loading from "./components/Loading";
 import AboutUs from "./pages/AboutUs";
 import OurTim from "./pages/OurTim";
+import UseEffect from "./pages/UseEffect";
 // import ErrorPage from "./pages/ErrorPage";
 // import Login from "./pages/auth/Login";
 // import Register from "./pages/auth/Register";
@@ -26,6 +27,13 @@ const Register = React.lazy(() => import("./pages/auth/Register"))
 const Forgot = React.lazy(() => import("./pages/auth/Forgot"))
 const AuthLayout = React.lazy(() => import("./layouts/AuthLayout"))
 const MainLayout = React.lazy(() => import("./layouts/MainLayout"))
+const Products = React.lazy(() => import("./pages/Products"))
+const ProductDetail = React.lazy(() => import("./pages/ProductDetail"))
+const NewsDetail = React.lazy(() => import("./pages/NewsDetail"))
+const TeamMemberDetail = React.lazy(() => import("./pages/TeamMemberDetail"))
+const CareerDetail = React.lazy(() => import("./pages/CareerDetail"))
+
+
 
 function App() {
   return (
@@ -39,6 +47,12 @@ function App() {
       <Route path="/about-us" element={<AboutUs />} />
       <Route path="/our-team" element={<OurTim />} />
       <Route path="*" element={<ErrorPage />} />
+      <Route path="products" element={<Products />} />
+      <Route path="/products/:id" element={<ProductDetail />} />
+      <Route path="/news/:id_news" element={<NewsDetail />} />
+      <Route path="/team/:id" element={<TeamMemberDetail />} /> 
+      <Route path="/careers/:id" element={<CareerDetail />} /> 
+      <Route path="useeffect" element={<UseEffect />} />
     </Route>
 
       <Route element={<AuthLayout />}>

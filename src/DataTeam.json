@@ -1,32 +1,48 @@
+
 [
   {
     "id": 1,
     "name": "Dewi Anggraeni",
     "position": "CEO & Founder",
-    "photo": "https://randomuser.me/api/portraits/women/65.jpg"
+    "photo": "https://randomuser.me/api/portraits/women/65.jpg",
+    "bio": "Dewi adalah visionary di balik SoleXpress, dengan pengalaman lebih dari 10 tahun di industri fashion dan e-commerce. Ia berdedikasi untuk membawa produk sepatu berkualitas tinggi ke pasar Indonesia dengan etika dan inovasi.",
+    "linkedin": "https://www.linkedin.com/in/dewianggraeni",
+    "twitter": "https://twitter.com/dewi_a"
   },
   {
     "id": 2,
     "name": "Rian Setiawan",
     "position": "Head of Marketing",
-    "photo": "https://randomuser.me/api/portraits/men/43.jpg"
+    "photo": "https://randomuser.me/api/portraits/men/43.jpg",
+    "bio": "Rian adalah ahli strategi pemasaran digital dengan rekam jejak sukses dalam membangun brand awareness. Dia bertanggung jawab untuk membuat SoleXpress dikenal di seluruh penjuru negeri melalui kampanye yang kreatif dan efektif.",
+    "linkedin": "https://www.linkedin.com/in/riansetiawan",
+    "twitter": "https://twitter.com/rian_s"
   },
   {
     "id": 3,
     "name": "Intan Pratiwi",
     "position": "Product Manager",
-    "photo": "https://randomuser.me/api/portraits/women/24.jpg"
+    "photo": "https://randomuser.me/api/portraits/women/24.jpg",
+    "bio": "Intan memiliki mata yang tajam untuk detail dan tren. Sebagai Product Manager, ia memastikan setiap sepatu yang kami tawarkan tidak hanya modis tetapi juga memenuhi standar kualitas tertinggi dan fungsionalitas yang diharapkan pelanggan.",
+    "linkedin": "https://www.linkedin.com/in/intanpratiwi",
+    "twitter": "https://twitter.com/intan_p"
   },
   {
     "id": 4,
     "name": "Agus Santoso",
     "position": "Lead Developer",
-    "photo": "https://randomuser.me/api/portraits/men/31.jpg"
+    "photo": "https://randomuser.me/api/portraits/men/31.jpg",
+    "bio": "Agus adalah otak di balik platform digital kami. Dengan keahliannya di bidang pengembangan web, ia memastikan pengalaman belanja online Anda berjalan lancar, aman, dan menyenangkan. Dia selalu mencari cara untuk meningkatkan teknologi kami.",
+    "linkedin": "https://www.linkedin.com/in/agussantoso",
+    "twitter": "https://twitter.com/agus_s"
   },
   {
     "id": 5,
     "name": "Sari Melati",
     "position": "Customer Support",
-    "photo": "https://randomuser.me/api/portraits/women/12.jpg"
+    "photo": "https://randomuser.me/api/portraits/women/12.jpg",
+    "bio": "Sari adalah wajah ramah di balik layanan pelanggan kami. Dia berkomitmen untuk memberikan dukungan terbaik dan memastikan setiap pertanyaan atau masalah pelanggan ditangani dengan cepat dan efektif, menciptakan pengalaman positif bagi semua.",
+    "linkedin": "https://www.linkedin.com/in/sarimelati",
+    "twitter": "https://twitter.com/sari_m"
   }
 ]

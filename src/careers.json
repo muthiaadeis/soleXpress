@@ -1,24 +1,60 @@
+
 [
-    {
-      "id": 1,
-      "title": "Digital Marketing Specialist",
-      "description": "Bergabunglah untuk meningkatkan visibilitas merek sepatu kami secara digital.",
-      "location": "Jakarta",
-      "type": "Full-Time"
-    },
-    {
-      "id": 2,
-      "title": "Customer Service Representative",
-      "description": "Bantu pelanggan kami menemukan sepatu yang sempurna.",
-      "location": "Bandung",
-      "type": "Part-Time"
-    },
-    {
-      "id": 3,
-      "title": "Warehouse Coordinator",
-      "description": "Kelola dan pantau pengiriman sepatu secara efisien.",
-      "location": "Surabaya",
-      "type": "Full-Time"
-    }
-  ]
-  
+  {
+    "id": 1,
+    "title": "Digital Marketing Specialist",
+    "description": "Bergabunglah untuk meningkatkan visibilitas merek sepatu kami secara digital.",
+    "location": "Jakarta",
+    "type": "Full-Time",
+    "responsibilities": [
+      "Mengembangkan dan mengimplementasikan strategi pemasaran digital.",
+      "Mengelola kampanye iklan di media sosial dan mesin pencari.",
+      "Menganalisis data kinerja kampanye dan membuat laporan.",
+      "Berkoordinasi dengan tim kreatif untuk konten pemasaran."
+    ],
+    "requirements": [
+      "Pengalaman 2+ tahun di pemasaran digital.",
+      "Menguasai SEO/SEM, Google Analytics, dan platform iklan media sosial.",
+      "Kemampuan analisis dan komunikasi yang baik.",
+      "Pendidikan minimal S1 di bidang terkait."
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Customer Service Representative",
+    "description": "Bantu pelanggan kami menemukan sepatu yang sempurna.",
+    "location": "Bandung",
+    "type": "Part-Time",
+    "responsibilities": [
+      "Menjawab pertanyaan pelanggan melalui telepon, email, dan chat.",
+      "Memberikan informasi produk dan membantu proses pembelian.",
+      "Menangani keluhan pelanggan dengan sopan dan efektif.",
+      "Mendokumentasikan interaksi pelanggan."
+    ],
+    "requirements": [
+      "Pengalaman di bidang layanan pelanggan diutamakan.",
+      "Kemampuan komunikasi lisan dan tulisan yang sangat baik.",
+      "Ramah, sabar, dan berorientasi pada solusi.",
+      "Fleksibel untuk bekerja shift, termasuk akhir pekan."
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Warehouse Coordinator",
+    "description": "Kelola dan pantau pengiriman sepatu secara efisien.",
+    "location": "Surabaya",
+    "type": "Full-Time",
+    "responsibilities": [
+      "Mengatur penerimaan dan pengiriman barang di gudang.",
+      "Memastikan akurasi inventaris dan ketertiban gudang.",
+      "Berkoordinasi dengan tim logistik dan penjualan.",
+      "Melakukan pemeriksaan kualitas barang."
+    ],
+    "requirements": [
+      "Pengalaman 1+ tahun di manajemen gudang/logistik.",
+      "Mampu mengoperasikan sistem manajemen gudang (WMS).",
+      "Teliti, bertanggung jawab, dan mampu bekerja di bawah tekanan.",
+      "Memiliki kendaraan pribadi menjadi nilai tambah."
+    ]
+  }
+]
