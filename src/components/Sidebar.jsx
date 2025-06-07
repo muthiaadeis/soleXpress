@@ -1,3 +1,4 @@
+import { MdRateReview } from "react-icons/md"; 
 import { AiFillHome } from "react-icons/ai"; 
 import { GiSonicShoes } from "react-icons/gi";
 import React, { useState } from "react";
@@ -102,6 +103,19 @@ export default function Sidebar() {
             >
               <FaRegNewspaper className="text-3xl" />
               <span>News</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/testimoni"
+              className={`flex items-center space-x-3 p-2 transition-colors duration-200 ${
+                location.pathname === "/testimoni"
+                  ? activeLinkClass
+                  : inactiveLinkClass
+              }`}
+            >
+              <MdRateReview className="text-3xl"/>
+              <span>Testimoni</span>
             </Link>
           </li>
           <li>

@@ -1,12 +1,12 @@
-// src/pages/TeamMemberDetail.jsx (Buat file baru ini)
+// src/pages/TeamMemberDetail.jsx
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import teamMembersData from '../DataTeam.json'; // PENTING: Import data tim lokal
 import { FaLinkedin, FaTwitter } from "react-icons/fa"; // Import ikon
+import { teamAPI } from '../services/teamAPI'; // PENTING: Import API baru Anda
 
 export default function TeamMemberDetail() {
-  // Mengambil 'id' dari URL (sesuai dengan nama placeholder di App.jsx)
+  // Mengambil 'id' dari URL
   const { id } = useParams(); 
   
   // State untuk menyimpan detail anggota tim yang ditemukan
@@ -17,34 +17,47 @@ export default function TeamMemberDetail() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Reset state setiap kali ID berubah
-    setMember(null);
-    setError(null);
-    setIsLoading(true);
+    const fetchMemberDetail = async () => {
+      // Reset state setiap kali ID berubah atau saat memulai fetch baru
+      setMember(null);
+      setError(null);
+      setIsLoading(true);
 
-    // Konversi ID dari string ke number
-    const memberIdNum = parseInt(id, 10); 
+      // Pastikan ID adalah angka yang valid sebelum memanggil API
+      // Supabase biasanya menggunakan UUID (string) untuk ID, 
+      // tetapi jika tabel Anda menggunakan int8 seperti DataTeam.json,
+      // maka parseInt tetap diperlukan. Sesuaikan dengan tipe data ID di Supabase.
+      // Jika ID di Supabase Anda adalah UUID (text), Anda TIDAK perlu parseInt(id, 10).
+      const memberId = id; // Gunakan langsung id jika di Supabase ID-nya adalah UUID (string)
+      // Jika ID di Supabase adalah integer (int8), gunakan:
+      // const memberId = parseInt(id, 10); 
+      // if (isNaN(memberId)) {
+      //   setError("ID anggota tim tidak valid.");
+      //   setIsLoading(false);
+      //   return;
+      // }
 
-    // Validasi ID yang dikonversi
-    if (isNaN(memberIdNum)) {
-      setError("ID anggota tim tidak valid.");
-      setIsLoading(false);
-      return;
-    }
+      try {
+        // Panggil fungsi fetchTeamMemberById dari teamAPI
+        const foundMember = await teamAPI.fetchTeamMemberById(memberId);
 
-    // Cari anggota tim di dalam array teamMembersData
-    const foundMember = teamMembersData.find((item) => item.id === memberIdNum);
-
-    // Simulasi delay (opsional)
-    setTimeout(() => {
         if (foundMember) {
-            setMember(foundMember); // Jika ditemukan, simpan di state
-            setError(null);
+          setMember(foundMember); // Jika ditemukan, simpan di state
+          setError(null);
         } else {
-            setError("Maaf, anggota tim tidak ditemukan.");
+          // Jika foundMember adalah null (berarti API tidak menemukan data)
+          setError("Maaf, anggota tim tidak ditemukan.");
         }
+      } catch (err) {
+        console.error("Error fetching team member from Supabase:", err);
+        // Tangani error spesifik dari API (misalnya, jika API melempar error string)
+        setError(err.message || "Gagal memuat detail anggota tim dari server.");
+      } finally {
         setIsLoading(false); // Selesai loading
-    }, 300); 
+      }
+    };
+
+    fetchMemberDetail();
   }, [id]); // Dependency array: efek ini akan jalan ulang jika 'id' berubah
 
   // Tampilan loading
@@ -68,7 +81,7 @@ export default function TeamMemberDetail() {
     );
   }
 
-  // Tampilan detail anggota tim jika ditemukan
+  // Tampilan detail anggota tim jika ditemukan (member sudah tidak null)
   return (
     <div className="font-podkova p-6 bg-white rounded-xl shadow-lg max-w-2xl mx-auto my-8 flex flex-col md:flex-row items-center md:items-start gap-8">
       <div className="flex-shrink-0">

@@ -2,6 +2,7 @@ import { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { Outlet } from "react-router-dom";
+import PageHeader from "../components/PageHeader";
 
 export default function MainLayout() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -11,12 +12,7 @@ export default function MainLayout() {
       <div id="layout-wrapper" className="flex flex-row flex-1">
         <Sidebar />
         <div id="main-content" className="flex-1 p-4">
-          <Header
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-          />
+        <Header/>
 
           <Outlet />
         </div>

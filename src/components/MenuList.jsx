@@ -1,3 +1,4 @@
+import { MdRateReview } from "react-icons/md"; 
 import { useState } from "react";
 import { CgWorkAlt } from "react-icons/cg"; 
 import { FaQuestionCircle, FaInfoCircle } from "react-icons/fa"; 
@@ -16,6 +17,7 @@ export default function MenuList() {
     { icon: <AiOutlineShoppingCart className="text-xl text-gray-600 mr-4" />, label: "Cart" },
     { icon: <HiOutlineNewspaper className="text-xl text-gray-600 mr-4"/>, label: "News"},
     { icon: <RiCustomerService2Fill className="text-xl text-gray-600 mr-4" />, label: "Contact Us" },
+    { icon: <MdRateReview className="text-xl text-gray-600 mr-4"/>, label: "Testimoni" },
     { icon: <FaInfoCircle className="text-xl text-gray-600 mr-4"/>, label: "About Us"},
     { icon: <BsPeopleFill className="text-xl text-gray-600 mr-4"/>, label: "Our Team"},
     { icon: <FaQuestionCircle className="text-xl text-gray-600 mr-4"/>, label: "FAQ Page"},

@@ -1,33 +1,67 @@
-// src/pages/News.jsx (atau di mana pun Anda menyimpannya)
-
-import React from 'react';
-import { Link } from 'react-router-dom'; // PENTING: Import Link
-import newsData from '../news.json'; // Pastikan path ini benar
+// src/pages/News.jsx
+import React, { useEffect, useState } from 'react'; // Tambahkan useEffect dan useState
+import { Link } from 'react-router-dom';
+import { newsAPI } from '../services/newsAPI'; // Import newsAPI dari services Anda
 
 export default function News() {
+  const [news, setNews] = useState([]); // Gunakan state untuk menyimpan data berita
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    async function fetchAllNews() {
+      setLoading(true);
+      setError(null);
+      try {
+        const data = await newsAPI.fetchNews(); // Ambil data dari Supabase via newsAPI
+        setNews(data); // Set data berita ke state
+      } catch (err) {
+        console.error('Error fetching news for list:', err.message);
+        setError('Gagal memuat daftar berita. Silakan coba lagi nanti.');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchAllNews();
+  }, []); // Dependency array kosong agar hanya dijalankan sekali saat komponen mount
+
+  if (loading) {
+    return <div className="text-center py-10">Memuat daftar berita...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-10 text-red-500">{error}</div>;
+  }
+
+  if (news.length === 0) {
+    return <div className="text-center py-10 text-gray-600">Tidak ada berita yang tersedia saat ini di Supabase.</div>;
+  }
+
   return (
     <div className="font-podkova p-6 max-w-5xl mx-auto">
       <h1 className="text-green-500 text-3xl font-bold mb-6 text-center">Berita Terbaru SoleXpress</h1>
       <div className="space-y-6">
-        {newsData.map((item) => (
-          <div key={item.id_news} className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition">
+        {news.map((item) => ( // Iterasi melalui data 'news' dari Supabase
+          <div key={item.id} className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition"> {/* Gunakan item.id */}
             {/* Bungkus judul dengan Link agar bisa diklik ke detail berita */}
-            <Link to={`/news/${item.id_news}`} className="block"> {/* Perhatikan path '/news/:id_news' */}
+            {/* PASTIKAN PATH DI SINI SAMA DENGAN YANG ANDA DEFENISIKAN DI App.jsx */}
+            {/* Jika di App.jsx Anda menggunakan `/news/:id_news`, maka di sini juga `/news/${item.id_news}` */}
+            {/* Namun, saya sangat menyarankan untuk menggunakan `:id` di App.jsx dan `item.id` di sini dan `useParams().id` di NewsDetail */}
+            <Link to={`/news/${item.id}`} className="block"> {/* Menggunakan item.id dari Supabase */}
               <h2 className="text-2xl font-semibold mb-2 text-green-400 hover:text-green-800 cursor-pointer">
-                {item.title} {/* Hanya menampilkan judul */}
+                {item.title}
               </h2>
             </Link>
             <div className="text-sm text-green-800 mb-2">
-              {item.date} {/* Hanya menampilkan tanggal */}
+              {/* Gunakan created_at dari Supabase, bukan item.date dari JSON */}
+              {new Date(item.created_at).toLocaleDateString('id-ID', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
             </div>
-            {/* Bagian ini Dihapus atau Dikomentari agar 'content' tidak muncul di daftar berita:
-              <p className="text-gray-700">
-                  {item.content.length > 150 ? item.content.substring(0, 150) + '...' : item.content}
-                  {item.content.length > 150 && (
-                      <Link to={`/news/${item.id_news}`} className="text-blue-500 hover:underline ml-1">Baca Selengkapnya</Link>
-                  )}
-              </p>
-            */}
+            {/* Content tidak ditampilkan di list, ini sudah sesuai */}
           </div>
         ))}
       </div>

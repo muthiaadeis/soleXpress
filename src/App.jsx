@@ -32,7 +32,7 @@ const ProductDetail = React.lazy(() => import("./pages/ProductDetail"))
 const NewsDetail = React.lazy(() => import("./pages/NewsDetail"))
 const TeamMemberDetail = React.lazy(() => import("./pages/TeamMemberDetail"))
 const CareerDetail = React.lazy(() => import("./pages/CareerDetail"))
-
+const TestimonialPage = React.lazy(() => import("./pages/TestimonialPage"))
 
 
 function App() {
@@ -48,6 +48,7 @@ function App() {
       <Route path="/our-team" element={<OurTim />} />
       <Route path="*" element={<ErrorPage />} />
       <Route path="products" element={<Products />} />
+      <Route path="testimoni" element={<TestimonialPage />} />
       <Route path="/products/:id" element={<ProductDetail />} />
       <Route path="/news/:id_news" element={<NewsDetail />} />
       <Route path="/team/:id" element={<TeamMemberDetail />} /> 
