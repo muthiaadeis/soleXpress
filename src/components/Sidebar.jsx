@@ -1,3 +1,10 @@
+import { CgWorkAlt } from "react-icons/cg"; 
+import { BsQuestionCircle } from "react-icons/bs"; 
+import { AiOutlineTeam } from "react-icons/ai"; 
+import { AiOutlineInfoCircle } from "react-icons/ai"; 
+import { AiOutlineInfo } from "react-icons/ai"; 
+import { MdOutlineRateReview } from "react-icons/md"; 
+import { AiOutlineHome } from "react-icons/ai"; 
 import { MdRateReview } from "react-icons/md"; 
 import { AiFillHome } from "react-icons/ai"; 
 import { GiSonicShoes } from "react-icons/gi";
@@ -68,7 +75,7 @@ export default function Sidebar() {
                 location.pathname === "/" ? activeLinkClass : inactiveLinkClass
               }`}
             >
-              <AiFillHome className="text-3xl"/>
+              <AiOutlineHome className="text-3xl"/>
               <span>Home</span>
             </Link>
           </li>
@@ -89,6 +96,7 @@ export default function Sidebar() {
             {/* Gunakan fungsi getNavLinkClass di sini */}
             <NavLink id="menu-4" to="/products" className={getNavLinkClass}>
               <GiSonicShoes className="text-3xl"/>
+
               Products
             </NavLink>
           </li>
@@ -114,7 +122,7 @@ export default function Sidebar() {
                   : inactiveLinkClass
               }`}
             >
-              <MdRateReview className="text-3xl"/>
+              <MdOutlineRateReview className="text-3xl"/>
               <span>Testimoni</span>
             </Link>
           </li>
@@ -127,7 +135,7 @@ export default function Sidebar() {
                   : inactiveLinkClass
               }`}
             >
-              <AiFillInfoCircle className="text-3xl" />
+              <AiOutlineInfoCircle className="text-3xl"/>
               <span>About Us</span>
             </Link>
           </li>
@@ -140,7 +148,7 @@ export default function Sidebar() {
                   : inactiveLinkClass
               }`}
             >
-              <BsPeopleFill className="text-3xl" />
+              <AiOutlineTeam className="text-3xl"/>
               <span>Our Team</span>
             </Link>
           </li>
@@ -153,7 +161,7 @@ export default function Sidebar() {
                   : inactiveLinkClass
               }`}
             >
-              <FaQuestionCircle className="text-3xl" />
+              <BsQuestionCircle className="text-3xl"/>
               <span>FAQ</span>
             </Link>
           </li>
@@ -166,7 +174,7 @@ export default function Sidebar() {
                   : inactiveLinkClass
               }`}
             >
-              <FaBriefcase className="text-3xl" />
+              <CgWorkAlt className="text-3xl"/>
               <span>Careers</span>
             </Link>
           </li>

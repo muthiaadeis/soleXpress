@@ -1,149 +1,135 @@
-import { ImSpinner2 } from "react-icons/im";
-import { BsFillExclamationDiamondFill } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import axios from "axios";
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { BsFillExclamationDiamondFill } from 'react-icons/bs';
+import { ImSpinner2 } from 'react-icons/im';
+import { usersAPI } from "../../services/usersAPI";
 
 export default function Login() {
-  /* navigate, state & handleChange*/
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
-  const [dataForm, setDataForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const handleChange = (evt) => {
-    const { name, value } = evt.target;
-    setDataForm({
-      ...dataForm,
-      [name]: value,
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+    const [dataForm, setDataForm] = useState({
+        username: '',
+        password: '',
     });
-  };
 
-  /* process form */
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleChange = (evt) => {
+        const { name, value } = evt.target;
+        setDataForm({
+            ...dataForm,
+            [name]: value,
+        });
+    };
 
-    setLoading(true);
-    setError(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError('');
 
-    axios
-      .post("https://dummyjson.com/user/login", {
-        username: dataForm.email,
-        password: dataForm.password,
-      })
-      .then((response) => {
-        // Jika status bukan 200, tampilkan pesan error
-        if (response.status !== 200) {
-          setError(response.data.message);
-          return;
+        try {
+            // Gunakan login dari API Supabase
+            const user = await usersAPI.login(dataForm.username, dataForm.password);
+
+            if (user) {
+                // Misalnya simpan user ke localStorage atau context (opsional)
+                // localStorage.setItem('user', JSON.stringify(user));
+                navigate('/'); // redirect ke homepage
+            } else {
+                setError('Username/email atau password salah');
+            }
+        } catch (err) {
+            setError('Gagal login. Silakan coba lagi.');
+        } finally {
+            setLoading(false);
         }
+    };
 
-        // Redirect ke dashboard jika login sukses
-        navigate("/");
-      })
-      .catch((err) => {
-        if (err.response) {
-          setError(err.response.data.message || "An error occurred");
-        } else {
-          setError(err.message || "An unknown error occurred");
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+    return (
+        <div className="font-podkova min-h-screen flex items-center justify-center relative">
+            <div className="fixed inset-0 -z-10">
+                <img
+                    src="/img/sepatu.jpg"
+                    alt="sepatu"
+                    className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-black/30 backdrop-blur-sm"></div>
+            </div>
 
-  const handleForgotPassword = () => {
-    navigate("/forgot");
-  };
+            <div className="bg-white rounded-2xl p-10 w-80 sm:w-96 flex flex-col items-center drop-shadow-lg mx-4">
+                <h1 className="text-3xl font-extrabold text-green-800 flex items-center gap-2 select-none">
+                    <span>SoleXpress</span>
+                </h1>
 
-  const handleRegister = () => {
-    navigate("/register");
-  };
+                {error && (
+                    <div className="w-full mt-4 p-3 bg-red-100 text-red-600 text-sm rounded-lg flex items-center">
+                        <BsFillExclamationDiamondFill className="mr-2" />
+                        {error}
+                    </div>
+                )}
 
-  /* error & loading status */
-  const errorInfo = error ? (
-    <div className="bg-red-200 mb-5 p-5 text-sm font-light text-gray-600 rounded flex items-center">
-      <BsFillExclamationDiamondFill className="text-red-600 me-2 text-lg" />
-      {error}
-    </div>
-  ) : null;
+                <form className="w-full mt-8 space-y-6" onSubmit={handleSubmit}>
+                    <div className="relative">
+                        <input
+                            id="username"
+                            name="username"
+                            type="text"
+                            placeholder="Username "
+                            required
+                            className="w-full border-b border-gray-300 focus:border-gray-600 focus:outline-none text-gray-600 placeholder-gray-400 pr-8 py-2"
+                            value={dataForm.username}
+                            onChange={handleChange}
+                            disabled={loading}
+                        />
+                    </div>
+                    <div className="relative">
+                        <input
+                            id="password"
+                            name="password"
+                            type="password"
+                            placeholder="Password"
+                            required
+                            className="w-full border-b border-gray-300 focus:border-gray-600 focus:outline-none text-gray-600 placeholder-gray-400 pr-8 py-2"
+                            value={dataForm.password}
+                            onChange={handleChange}
+                            disabled={loading}
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        className="w-full bg-green-700 text-white text-xs font-semibold py-3 rounded-full hover:bg-gray-800 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <div className="flex items-center justify-center">
+                                <ImSpinner2 className="animate-spin mr-2" />
+                                Processing...
+                            </div>
+                        ) : (
+                            'LOGIN'
+                        )}
+                    </button>
+                </form>
 
-  const loadingInfo = loading ? (
-    <div className="bg-gray-200 mb-5 p-5 text-sm rounded flex items-center">
-      <ImSpinner2 className="me-2 animate-spin" />
-      Mohon Tunggu...
-    </div>
-  ) : null;
-
-  return (
-    <div>
-      <h2 className="font-podkova text-2xl font-semibold text-gray-700 mb-6 text-center mt-2">
-        Welcome Back
-      </h2>
-      {errorInfo}
-
-      {loadingInfo}
-
-      <form onSubmit={handleSubmit}>
-        <div className="mb-5">
-          <label className="font-podkova block font-medium text-gray-700 mb-1">
-            Email Address
-          </label>
-          <input
-            type="text"
-            id="email"
-            className="font-podkova w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm
-                            placeholder-gray-400"
-            placeholder="you@example.com"
-            name="email"
-            onChange={handleChange}
-          />
+                <div className="w-full mt-4 text-sm text-gray-600 space-y-2">
+                    <p className="text-center">
+                        Don't have an account?{' '}
+                        <Link
+                            to="/register"
+                            className="text-green-900 font-semibold hover:underline"
+                        >
+                            Register here
+                        </Link>
+                    </p>
+                    <p className="text-center">
+                        <Link
+                            to="/forgot"
+                            className="text-green-900 font-semibold hover:underline"
+                        >
+                            Forgot Password?
+                        </Link>
+                    </p>
+                </div>
+            </div>
         </div>
-        <div className="mb-6">
-          <label className="font-podkova block font-medium text-gray-700 mb-1">
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="font-podkova w-full px-4 py-2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm
-                            placeholder-gray-400"
-            placeholder="********"
-            name="password"
-            onChange={handleChange}
-          />
-        </div>
-        <button
-          type="submit"
-          className="font-podkova w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4
-                        rounded-lg transition duration-300"
-        >
-          Login
-        </button>
-
-        {/* Tambahan Forgot Password & Register */}
-        <div className="flex justify-between mt-4">
-          <button
-            type="button"
-            onClick={handleForgotPassword}
-            className="text-sm text-blue-500 hover:underline"
-          >
-            Forgot Password?
-          </button>
-          <button
-            type="button"
-            onClick={handleRegister}
-            className="text-sm text-blue-500 hover:underline"
-          >
-            Register
-          </button>
-        </div>
-        
-      </form>
-    </div>
-  );
+    );
 }
