@@ -183,25 +183,28 @@ export default function Sidebar() {
 
       {/* Footer */}
       <div id="sidebar-footer" className="mt-auto">
-        <div className="bg-green-50 rounded-md shadow-sm p-4 mb-4">
-          <h6 className="font-podkova font-semibold text-sm text-green-700 mb-2">
-            Need Help?
-          </h6>
-          <button
-            onClick={handleToggleContact}
-            className="flex justify-center items-center p-2 bg-white rounded-md space-x-2 text-green-600 hover:bg-green-100 transition w-full"
-          >
-            <IoIosAdd className="mr-2" />
-            <span className="font-podkova text-sm font-medium">Contact Us</span>
-          </button>
-        </div>
+  {/* Form ditampilkan duluan */}
+  {showContactInfo && (
+    <div className="mb-4">
+      <ContactForm />
+    </div>
+  )}
 
-        {showContactInfo && (
-          <div className="mb-4">
-            <ContactForm />
-          </div>
-        )}
-      </div>
+  {/* Tombol Contact Us di bawahnya */}
+  <div className="bg-green-50 rounded-md shadow-sm p-4 mb-4">
+    <h6 className="font-podkova font-semibold text-sm text-green-700 mb-2">
+      Need Help?
+    </h6>
+    <button
+      onClick={handleToggleContact}
+      className="flex justify-center items-center p-2 bg-white rounded-md space-x-2 text-green-600 hover:bg-green-100 transition w-full"
+    >
+      <IoIosAdd className="mr-2" />
+      <span className="font-podkova text-sm font-medium">Contact Us</span>
+    </button>
+  </div>
+</div>
+
     </div>
   );
 }

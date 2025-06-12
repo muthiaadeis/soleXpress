@@ -1,4 +1,9 @@
 @import "tailwindcss";
+@tailwind utilities;
+
+/** Tambahkan Ini **/
+@plugin "daisyui" {
+}
 
 @font-face {
     font-family: 'Podkova';
@@ -36,6 +41,7 @@
     --font-podkova-bold: "Podkova-Bold", sans-serif;
     --font-podkova-semibold: "Podkova-SemiBold", sans-serif;
     --font-podkova-medium: "Podkova-Medium", sans-serif;
+
 
     --color-latar: #f3f4f6;
     --color-teks: #374151; 

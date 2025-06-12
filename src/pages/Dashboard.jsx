@@ -18,6 +18,8 @@ import Banner from '../components/Banner'; // Import komponen Banner yang baru
 import PopularCategories from '../components/PopularCategories';
 import SepatuListSearch from '../components/SepatuListSearch';
 import TestimonialPage from './TestimonialPage';
+import Footer from '../components/Footer';
+
 
 export default function Dashboard() {
   const [searchTerm, setSearchTerm] = useState('');
@@ -34,7 +36,7 @@ export default function Dashboard() {
 
         {/* Bagian lain dari halaman Home Anda */}
         <section className="mt-12">
-          <h2 className="font-podkova text-3xl font-bold text-gray-800 mb-6 text-center">Produk Unggulan</h2>
+          <h2 className="font-podkova text-3xl font-bold text-black-800 mb-6 text-center">Produk Unggulan</h2>
           {/* Di sini Anda bisa menampilkan daftar produk, mungkin dengan filter dari header */}
           <SepatuListSearch/>
           <PopularCategories/>
@@ -45,7 +47,6 @@ export default function Dashboard() {
         {/* <TestimonialList /> */}
         <TestimonialPage/>
       </main>
-
       {/* Footer (jika ada) */}
     </div>
   );

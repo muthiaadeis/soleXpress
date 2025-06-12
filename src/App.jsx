@@ -33,6 +33,7 @@ const NewsDetail = React.lazy(() => import("./pages/NewsDetail"))
 const TeamMemberDetail = React.lazy(() => import("./pages/TeamMemberDetail"))
 const CareerDetail = React.lazy(() => import("./pages/CareerDetail"))
 const TestimonialPage = React.lazy(() => import("./pages/TestimonialPage"))
+const Footer = React.lazy(() => import("./components/Footer"))
 
 
 function App() {
@@ -54,6 +55,7 @@ function App() {
       <Route path="/team/:id" element={<TeamMemberDetail />} /> 
       <Route path="/careers/:id" element={<CareerDetail />} /> 
       <Route path="useeffect" element={<UseEffect />} />
+      <Route path="/footer" element={<Footer />} /> 
     </Route>
 
       <Route element={<AuthLayout />}>

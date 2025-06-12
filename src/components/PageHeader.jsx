@@ -27,7 +27,7 @@ export default function PageHeader({ title, breadcrumb, children }) {
         <div id="pageheader-container" className="flex items-center justify-between p-4">
             <div id="pageheader-left" className="flex flex-col">
                 <span id="page-title" className="text-3xl font-semibold">
-                    {title || 'Dashboard'}
+                    {title }
                 </span>
                 {renderBreadcrumb()}
             </div>

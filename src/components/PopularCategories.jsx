@@ -32,7 +32,7 @@ const PopularCategories = () => {
       </div>
 
       {/* Popular Brands Section */}
-      <div className="mb-12">
+      <div className="mb-12 text-black">
         <h3 className="font-podkova text-xl font-semibold text-gray-800 mb-4">Popular top 10 brands</h3>
         <p className="font-podkova text-gray-500 mb-6">$400+ Orders & reviews</p>
         
@@ -57,7 +57,7 @@ const PopularCategories = () => {
       </div>
 
       {/* Newest Sellers Section */}
-      <div>
+      <div className="text-black">
         <h3 className="font-podkova text-xl font-semibold text-gray-800 mb-4">Newest Sellers</h3>
         <p className="font-podkova text-gray-500 mb-6">460+ Orders & reviews</p>
         

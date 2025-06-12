@@ -1,52 +1,62 @@
-// src/pages/CareerDetail.jsx (Buat file baru ini)
+// src/pages/CareerDetail.jsx
 
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import careersData from '../careers.json'; // PENTING: Import data karir lokal
+import { careersAPI } from '../services/careersAPI'; // Import the API functions
 
 export default function CareerDetail() {
-  // Mengambil 'id' dari URL (sesuai dengan nama placeholder di App.jsx)
-  const { id } = useParams(); 
-  
-  // State untuk menyimpan detail lowongan yang ditemukan
+  const { id } = useParams();
   const [job, setJob] = useState(null);
-  // State untuk error (misal: lowongan tidak ditemukan)
   const [error, setError] = useState(null);
-  // State untuk indikator loading
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Reset state setiap kali ID berubah
-    setJob(null);
-    setError(null);
-    setIsLoading(true);
-
-    // Konversi ID dari string ke number
-    const jobIdNum = parseInt(id, 10); 
-
-    // Validasi ID yang dikonversi
-    if (isNaN(jobIdNum)) {
-      setError("ID lowongan karir tidak valid.");
-      setIsLoading(false);
-      return;
-    }
-
-    // Cari lowongan di dalam array careersData
-    const foundJob = careersData.find((item) => item.id === jobIdNum);
-
-    // Simulasi delay (opsional)
-    setTimeout(() => {
-        if (foundJob) {
-            setJob(foundJob); // Jika ditemukan, simpan di state
-            setError(null);
-        } else {
-            setError("Maaf, lowongan karir tidak ditemukan.");
+    const fetchJobDetails = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        
+        // Convert ID to number and validate
+        const jobIdNum = parseInt(id, 10);
+        if (isNaN(jobIdNum)) {
+          throw new Error("ID lowongan karir tidak valid.");
         }
-        setIsLoading(false); // Selesai loading
-    }, 300); 
-  }, [id]); // Dependency array: efek ini akan jalan ulang jika 'id' berubah
 
-  // Tampilan loading
+        // Fetch job details from API
+        const jobData = await careersAPI.getById(jobIdNum);
+        
+        if (!jobData) {
+          throw new Error("Maaf, lowongan karir tidak ditemukan.");
+        }
+
+        // Transform the API response to match the expected structure
+        const transformedJob = {
+          ...jobData,
+          responsibilities: [
+            jobData.responsibilities_1,
+            jobData.responsibilities_2,
+            jobData.responsibilities_3,
+            jobData.responsibilities_4
+          ].filter(Boolean), // Remove empty/null values
+          requirements: [
+            jobData.requirements_1,
+            jobData.requirements_2,
+            jobData.requirements_3,
+            jobData.requirements_4
+          ].filter(Boolean) // Remove empty/null values
+        };
+
+        setJob(transformedJob);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchJobDetails();
+  }, [id]);
+
   if (isLoading) {
     return (
       <div className="p-4 text-center text-gray-600 text-lg my-8">
@@ -55,26 +65,30 @@ export default function CareerDetail() {
     );
   }
 
-  // Tampilan error
   if (error) {
     return (
       <div className="text-red-600 p-4 text-center text-xl my-8">
         {error}
         <div className="mt-4">
-            <Link to="/careers" className="text-blue-500 hover:underline">Kembali ke Daftar Karir</Link>
+          <Link to="/careers" className="text-blue-500 hover:underline">
+            Kembali ke Daftar Karir
+          </Link>
         </div>
       </div>
     );
   }
 
-  // Tampilan detail lowongan jika ditemukan
   return (
     <div className="font-podkova p-6 bg-white rounded-xl shadow-lg max-w-3xl mx-auto my-8">
       <h1 className="text-3xl font-bold mb-4 text-green-900">{job.title}</h1>
       
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 text-gray-700 mb-6 border-b pb-4">
-        <p className="flex items-center"><span className="font-semibold w-24">Lokasi:</span> 📍 {job.location}</p>
-        <p className="flex items-center"><span className="font-semibold w-24">Tipe:</span> 🕒 {job.type}</p>
+        <p className="flex items-center">
+          <span className="font-semibold w-24">Lokasi:</span> 📍 {job.location}
+        </p>
+        <p className="flex items-center">
+          <span className="font-semibold w-24">Tipe:</span> 🕒 {job.type}
+        </p>
       </div>
 
       <h2 className="text-2xl font-semibold mb-3 text-green-800">Deskripsi Pekerjaan</h2>

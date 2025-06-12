@@ -1,8 +1,7 @@
-// src/pages/ProductDetail.jsx
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import allProductsData from "../components/sepatu.json";
-import { FiShoppingCart, FiPackage, FiShield, FiGift, FiArrowLeft } from "react-icons/fi"; // FiX sudah dihapus
+import { FiShoppingCart, FiPackage, FiShield, FiGift, FiArrowLeft } from "react-icons/fi";
+import { dataSepatuAPI } from "../services/dataSepatuAPI";
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -21,28 +20,25 @@ export default function ProductDetail() {
         selectedColor: 'Black'
     });
 
-    // Harga layanan
+    // Service pricing
     const servicePrices = {
         basic: 10,
         premium: 25,
         express: 50
     };
 
-    // Biaya tambahan
     const addOnPrices = {
         packaging: 5,
         insurance: 15,
         giftWrap: 8
     };
 
-    // Multiplier urgensi
     const urgencyMultiplier = {
         normal: 1,
         urgent: 1.3,
         veryUrgent: 1.7
     };
 
-    // Warna yang tersedia
     const colorOptions = [
         { name: "Black", code: "bg-gray-900" },
         { name: "White", code: "bg-white border border-gray-300" },
@@ -51,27 +47,31 @@ export default function ProductDetail() {
     ];
 
     useEffect(() => {
-        setProduct(null);
-        setError(null);
-        setIsLoading(true);
+        const fetchProduct = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                
+                const productIdNum = parseInt(id, 10);
+                if (isNaN(productIdNum)) {
+                    throw new Error("Invalid product ID");
+                }
 
-        const productIdNum = parseInt(id, 10);
+                const productData = await dataSepatuAPI.getById(productIdNum);
+                
+                if (!productData) {
+                    throw new Error("Product not found");
+                }
 
-        if (isNaN(productIdNum)) {
-            setError("ID produk tidak valid.");
-            setIsLoading(false);
-            return;
-        }
+                setProduct(productData);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
 
-        const foundProduct = allProductsData.find(item => item.id === productIdNum);
-
-        if (foundProduct) {
-            setProduct(foundProduct);
-            setError(null);
-        } else {
-            setError("Maaf, produk tidak ditemukan dalam katalog kami. 😔");
-        }
-        setIsLoading(false);
+        fetchProduct();
     }, [id]);
 
     const handleInputChange = (e) => {
@@ -93,21 +93,13 @@ export default function ProductDetail() {
     const calculateTotalPrice = () => {
         if (!product) return 0;
 
-        // Harga dasar produk
         const baseProductPrice = product.price * serviceDetails.quantity;
-
-        // Harga layanan
         const servicePrice = servicePrices[serviceDetails.serviceType] * serviceDetails.quantity;
-
-        // Biaya tambahan
         const addOnsCost = serviceDetails.addOns.reduce((total, addOn) => {
             return total + (addOnPrices[addOn] * serviceDetails.quantity);
         }, 0);
 
-        // Total sebelum urgensi
         const subTotal = baseProductPrice + servicePrice + addOnsCost;
-
-        // Apply urgensi multiplier
         return subTotal * urgencyMultiplier[serviceDetails.urgency];
     };
 
@@ -120,8 +112,8 @@ export default function ProductDetail() {
             calculatedAt: new Date().toISOString()
         };
 
-        console.log('Item ditambahkan ke keranjang:', cartItem);
-        alert(`${product.name} (${serviceDetails.selectedColor}) ditambahkan ke keranjang\nTotal: $${totalPrice.toFixed(2)}`);
+        console.log('Item added to cart:', cartItem);
+        alert(`${product.name} (${serviceDetails.selectedColor}) added to cart\nTotal: $${totalPrice.toFixed(2)}`);
 
         setShowServiceForm(false);
         setServiceDetails({
@@ -140,7 +132,7 @@ export default function ProductDetail() {
     if (isLoading) {
         return (
             <div className="p-4 text-center text-gray-600 text-lg my-8">
-                Sedang memuat detail produk...
+                Loading product details...
             </div>
         );
     }
@@ -156,13 +148,13 @@ export default function ProductDetail() {
     if (!product) {
         return (
             <div className="p-4 text-center text-gray-600 text-lg my-8">
-                Data produk tidak tersedia.
+                Product data not available.
             </div>
         );
     }
 
     return (
-        <div className="font-podkova">
+        <div className="font-podkova text-black">
             {/* Back Button */}
             <div className="max-w-6xl mx-auto mt-8 px-6">
                 <button
@@ -228,39 +220,25 @@ export default function ProductDetail() {
                             </div>
                         </div>
 
-                        {/* Description */}
-                        {product.description && (
-                            <div className="mb-6">
-                                <h3 className="font-medium text-gray-800 mb-2">Description</h3>
-                                <p className="text-gray-700">{product.description}</p>
-                            </div>
-                        )}
+                        {/* Material Info */}
+                        <div className="mb-6">
+                            <h3 className="font-medium text-gray-800 mb-2">Material</h3>
+                            <ul className="list-disc list-inside text-gray-700">
+                                {product.upper_material && <li>Upper: {product.upper_material}</li>}
+                                {product.sole_material && <li>Sole: {product.sole_material}</li>}
+                                {product.lining_material && <li>Lining: {product.lining_material}</li>}
+                            </ul>
+                        </div>
 
                         {/* Tags */}
-                        {product.tags && product.tags.length > 0 && (
-                            <div className="mb-6">
-                                <h3 className="font-medium text-gray-800 mb-2">Tags</h3>
-                                <div className="flex flex-wrap gap-2">
-                                    {product.tags.map((tag, index) => (
-                                        <span key={index} className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
+                        <div className="mb-6">
+                            <h3 className="font-medium text-gray-800 mb-2">Tags</h3>
+                            <div className="flex flex-wrap gap-2">
+                                {product.tag1 && <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">{product.tag1}</span>}
+                                {product.tag2 && <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">{product.tag2}</span>}
+                                {product.tag3 && <span className="bg-blue-100 text-blue-800 text-sm font-medium px-2.5 py-0.5 rounded-full">{product.tag3}</span>}
                             </div>
-                        )}
-
-                        {/* Material */}
-                        {product.material && (
-                            <div className="mb-6">
-                                <h3 className="font-medium text-gray-800 mb-2">Material</h3>
-                                <ul className="list-disc list-inside text-gray-700">
-                                    {product.material.upper && <li>Upper: {product.material.upper}</li>}
-                                    {product.material.sole && <li>Sole: {product.material.sole}</li>}
-                                    {product.material.lining && <li>Lining: {product.material.lining}</li>}
-                                </ul>
-                            </div>
-                        )}
+                        </div>
 
                         {/* Action Buttons */}
                         <div className="flex gap-4 mt-8">
@@ -288,12 +266,6 @@ export default function ProductDetail() {
                     <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
                         <div className="flex justify-between items-center border-b p-4">
                             <h3 className="font-bold text-lg">Service for {product.name}</h3>
-                            {/* <button // Tombol silang dihapus
-                                onClick={() => setShowServiceForm(false)}
-                                className="text-gray-500 hover:text-gray-700"
-                            >
-                                <FiX size={24} />
-                            </button> */}
                         </div>
 
                         <div className="p-4 space-y-4">
