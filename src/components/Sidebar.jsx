@@ -1,3 +1,4 @@
+import { MdOutlinePermMedia } from "react-icons/md"; 
 import { CgWorkAlt } from "react-icons/cg"; 
 import { BsQuestionCircle } from "react-icons/bs"; 
 import { AiOutlineTeam } from "react-icons/ai"; 
@@ -176,6 +177,19 @@ export default function Sidebar() {
             >
               <CgWorkAlt className="text-3xl"/>
               <span>Careers</span>
+            </Link>
+          </li>
+          <li>
+            <Link
+              to="/katalog-media"
+              className={`flex items-center space-x-3 p-2 transition-colors duration-200 ${
+                location.pathname === "/career"
+                  ? activeLinkClass
+                  : inactiveLinkClass
+              }`}
+            >
+              <MdOutlinePermMedia className="text-3xl" />
+              <span>Katalog Media</span>
             </Link>
           </li>
         </ul>
