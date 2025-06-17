@@ -43,12 +43,18 @@ export default function News() {
       <h1 className="text-green-500 text-3xl font-bold mb-6 text-center">Berita Terbaru SoleXpress</h1>
       <div className="space-y-6">
         {news.map((item) => ( // Iterasi melalui data 'news' dari Supabase
-          <div key={item.id} className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition"> {/* Gunakan item.id */}
+          <div key={item.id} className="bg-white p-6 rounded-2xl shadow hover:shadow-md transition"> 
+            {/* Menambahkan gambar di sini */}
+            {item.image_url && (
+              <img 
+                src={item.image_url} 
+                alt={item.title} 
+                className="w-full h-64 object-cover rounded-lg mb-4" 
+              />
+            )}
+            
             {/* Bungkus judul dengan Link agar bisa diklik ke detail berita */}
-            {/* PASTIKAN PATH DI SINI SAMA DENGAN YANG ANDA DEFENISIKAN DI App.jsx */}
-            {/* Jika di App.jsx Anda menggunakan `/news/:id_news`, maka di sini juga `/news/${item.id_news}` */}
-            {/* Namun, saya sangat menyarankan untuk menggunakan `:id` di App.jsx dan `item.id` di sini dan `useParams().id` di NewsDetail */}
-            <Link to={`/news/${item.id}`} className="block"> {/* Menggunakan item.id dari Supabase */}
+            <Link to={`/news/${item.id}`} className="block">
               <h2 className="text-2xl font-semibold mb-2 text-green-400 hover:text-green-800 cursor-pointer">
                 {item.title}
               </h2>
@@ -61,7 +67,6 @@ export default function News() {
                 day: 'numeric',
               })}
             </div>
-            {/* Content tidak ditampilkan di list, ini sudah sesuai */}
           </div>
         ))}
       </div>
