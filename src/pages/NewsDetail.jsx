@@ -4,8 +4,7 @@ import { useParams, Link } from 'react-router-dom';
 import { newsAPI } from '../services/newsAPI';
 
 export default function NewsDetail() {
-  const { id_news } = useParams(); // Ambil parameter dengan nama 'id_news'
-
+  const { id_news } = useParams();
   const [newsItem, setNewsItem] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,10 +29,10 @@ export default function NewsDetail() {
       }
     }
 
-    if (id_news) { // Periksa id_news
+    if (id_news) {
       fetchNewsDetail();
     }
-  }, [id_news]); // Tambahkan id_news ke dependency array
+  }, [id_news]);
 
   if (loading) {
     return (
@@ -67,8 +66,15 @@ export default function NewsDetail() {
   return (
     <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto bg-white shadow-xl rounded-2xl overflow-hidden">
-        {/* Opsional: Jika Anda ingin menambahkan gambar dummy/placeholder di masa depan, letakkan di sini */}
-        {/* <img src="https://via.placeholder.com/1200x400/34D399/FFFFFF?text=SoleXpress+News" alt="Berita SoleXpress" className="w-full h-80 object-cover" /> */}
+        
+        {/* Tampilkan gambar jika ada */}
+        {newsItem.image_url && (
+          <img
+            src={newsItem.image_url}
+            alt={newsItem.title}
+            className="w-full h-80 object-cover"
+          />
+        )}
 
         <div className="p-8 lg:p-10">
           <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight mb-4">
