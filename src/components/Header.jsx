@@ -97,16 +97,7 @@ const Header = ({
 
       {/* Kanan: Ikon */}
       <div className="flex items-center space-x-3">
-        <div className="relative p-2 bg-green-100 rounded-2xl hover:bg-green-200 cursor-pointer transition">
-          <FaBell className="text-lg text-gray-700" />
-          <span className="absolute top-0 right-0 px-1.5 py-0.5 text-xs font-bold text-white bg-red-600 rounded-full">
-            3
-          </span>
-        </div>
-
-        <div className="p-2 bg-green-100 rounded-2xl hover:bg-green-200 cursor-pointer transition">
-          <BiChat className="text-lg text-gray-700" />
-        </div>
+        
 
         <div
           className="p-2 bg-green-100 rounded-2xl hover:bg-green-200 cursor-pointer transition"

@@ -14,7 +14,6 @@ export default function MenuList() {
 
   const menuItems = [
     { icon: <AiFillHome className="text-xl text-gray-600 mr-4" />, label: "Home"},
-    { icon: <AiOutlineShoppingCart className="text-xl text-gray-600 mr-4" />, label: "Cart" },
     { icon: <HiOutlineNewspaper className="text-xl text-gray-600 mr-4"/>, label: "News"},
     { icon: <RiCustomerService2Fill className="text-xl text-gray-600 mr-4" />, label: "Contact Us" },
     { icon: <MdRateReview className="text-xl text-gray-600 mr-4"/>, label: "Testimoni" },

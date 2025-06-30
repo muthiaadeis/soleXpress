@@ -68,7 +68,7 @@ const CareerPage = () => {
                 to={`/careers/${job.id}`}
                 className="inline-block mt-4 px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors duration-200"
               >
-                Lihat Detail & Lamar
+                Lihat Detail 
               </Link>
             </div>
           ))}

@@ -1,8 +1,9 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { FiShoppingCart, FiPackage, FiShield, FiGift, FiArrowLeft, FiStar, FiCheckCircle, FiXCircle } from "react-icons/fi"; // Added FiCheckCircle, FiXCircle
+import { FiShoppingCart, FiArrowLeft, FiStar, FiCheckCircle, FiXCircle } from "react-icons/fi";
 import { dataSepatuAPI } from "../services/dataSepatuAPI";
 import { testimoniProdukAPI } from "../services/testimoniProdukAPI";
+import ServiceFormModal from "../components/ServiceFormModal";
 
 export default function ProductDetail() {
     const { id } = useParams();
@@ -29,27 +30,8 @@ export default function ProductDetail() {
     });
     const [testimonials, setTestimonials] = useState([]); // To store submitted testimonials for this product
 
-    // --- BAGIAN BARU: State untuk notifikasi kustom ---
+    // State for custom notification
     const [notification, setNotification] = useState(null); // { message: '...', type: 'success' | 'error' }
-
-    // Service pricing
-    const servicePrices = {
-        basic: 10,
-        premium: 25,
-        express: 50
-    };
-
-    const addOnPrices = {
-        packaging: 5,
-        insurance: 15,
-        giftWrap: 8
-    };
-
-    const urgencyMultiplier = {
-        normal: 1,
-        urgent: 1.3,
-        veryUrgent: 1.7
-    };
 
     const colorOptions = [
         { name: "Black", code: "bg-gray-900" },
@@ -92,28 +74,11 @@ export default function ProductDetail() {
         fetchProductAndTestimonials();
     }, [id]);
 
-    // --- BAGIAN BARU: Fungsi untuk menampilkan notifikasi ---
     const showNotification = (message, type) => {
         setNotification({ message, type });
         setTimeout(() => {
-            setNotification(null); // Notifikasi menghilang setelah 3 detik
+            setNotification(null); // Notification disappears after 3 seconds
         }, 3000);
-    };
-
-    const handleInputChange = (e) => {
-        const { name, value, type, checked } = e.target;
-
-        if (type === 'checkbox') {
-            let updatedAddOns = [...serviceDetails.addOns];
-            if (checked) {
-                updatedAddOns.push(value);
-            } else {
-                updatedAddOns = updatedAddOns.filter(item => item !== value);
-            }
-            setServiceDetails({ ...serviceDetails, addOns: updatedAddOns });
-        } else {
-            setServiceDetails({ ...serviceDetails, [name]: value });
-        }
     };
 
     const handleTestimonialChange = (e) => {
@@ -125,7 +90,6 @@ export default function ProductDetail() {
         setTestimonialForm({ ...testimonialForm, rating: newRating });
     };
 
-    // --- BAGIAN DIUBAH: Menggunakan showNotification di handleTestimonialSubmit ---
     const handleTestimonialSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -136,54 +100,29 @@ export default function ProductDetail() {
                 rating: testimonialForm.rating,
             };
             const createdTestimonial = await testimoniProdukAPI.create(newTestimonial);
-            setTestimonials(prev => [createdTestimonial, ...prev]); // Tambahkan yang terbaru di paling atas
-            showNotification('Terima kasih atas ulasan Anda!', 'success'); // Notifikasi sukses
+            setTestimonials(prev => [createdTestimonial, ...prev]); // Add the newest one at the top
+            showNotification('Terima kasih atas ulasan Anda!', 'success'); // Success notification
             // Reset form
             setTestimonialForm({ userName: '', rating: 0, comment: '' });
         } catch (err) {
             console.error("Gagal mengirim ulasan:", err);
-            showNotification('Gagal mengirim ulasan. Silakan coba lagi.', 'error'); // Notifikasi error
+            showNotification('Gagal mengirim ulasan. Silakan coba lagi.', 'error'); // Error notification
         }
-    };
-
-    const calculateTotalPrice = () => {
-        if (!product) return 0;
-
-        const baseProductPrice = product.price * serviceDetails.quantity;
-        const servicePrice = servicePrices[serviceDetails.serviceType] * serviceDetails.quantity;
-        const addOnsCost = serviceDetails.addOns.reduce((total, addOn) => {
-            return total + (addOnPrices[addOn] * serviceDetails.quantity);
-        }, 0);
-
-        const subTotal = baseProductPrice + servicePrice + addOnsCost;
-        return subTotal * urgencyMultiplier[serviceDetails.urgency];
-    };
-
-    // --- BAGIAN DIUBAH: Menggunakan showNotification di confirmAddToCart ---
-    const confirmAddToCart = () => {
-        const totalPrice = calculateTotalPrice();
-        const cartItem = {
-            product,
-            serviceDetails,
-            totalPrice,
-            calculatedAt: new Date().toISOString()
-        };
-
-        console.log('Item ditambahkan ke keranjang:', cartItem);
-        showNotification(`${product.name} (${serviceDetails.selectedColor}) berhasil ditambahkan ke keranjang! Total: $${totalPrice.toFixed(2)}`, 'success');
-
-        setShowServiceForm(false);
-        setServiceDetails({
-            serviceType: 'basic',
-            quantity: 1,
-            urgency: 'normal',
-            addOns: [],
-            selectedColor: 'Black'
-        });
     };
 
     const handleBackToProducts = () => {
         navigate('/products');
+    };
+
+    const handleCloseServiceForm = () => {
+        setShowServiceForm(false);
+        setServiceDetails({ // Reset service details when closing the form
+            serviceType: 'basic',
+            quantity: 1,
+            urgency: 'normal',
+            addOns: [],
+            selectedColor: serviceDetails.selectedColor // Keep the selected color
+        });
     };
 
     if (isLoading) {
@@ -212,11 +151,10 @@ export default function ProductDetail() {
 
     return (
         <div className="font-podkova text-black">
-            {/* --- BAGIAN BARU: Komponen Notifikasi Kustom (Toast) --- */}
+            {/* Custom Notification Component */}
             {notification && (
                 <div
-                    className={`fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white flex items-center gap-2 z-50 transform transition-transform duration-300 ${
-                        notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                    className={`fixed top-4 right-4 p-4 rounded-lg shadow-xl text-white flex items-center gap-2 z-50 transform transition-transform duration-300 ${notification.type === 'success' ? 'bg-green-500' : 'bg-red-500'
                     }`}
                 >
                     {notification.type === 'success' ? <FiCheckCircle className="text-2xl" /> : <FiXCircle className="text-2xl" />}
@@ -322,6 +260,7 @@ export default function ProductDetail() {
                                 <FiShoppingCart /> Tambah ke Keranjang
                             </button>
                             <button
+                                onClick={() => setShowServiceForm(true)}
                                 className="flex-1 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors duration-200"
                                 disabled={product.stock <= 0}
                             >
@@ -361,8 +300,7 @@ export default function ProductDetail() {
                             {[1, 2, 3, 4, 5].map((star) => (
                                 <FiStar
                                     key={star}
-                                    className={`cursor-pointer text-2xl ${
-                                        testimonialForm.rating >= star ? 'text-yellow-400' : 'text-gray-300'
+                                    className={`cursor-pointer text-2xl ${testimonialForm.rating >= star ? 'text-yellow-400' : 'text-gray-300'
                                     }`}
                                     onClick={() => handleRatingChange(star)}
                                 />
@@ -404,15 +342,14 @@ export default function ProductDetail() {
                                         {[1, 2, 3, 4, 5].map((star) => (
                                             <FiStar
                                                 key={star}
-                                                className={`${
-                                                    t.rating >= star ? 'text-yellow-400' : 'text-gray-300'
+                                                className={`${t.rating >= star ? 'text-yellow-400' : 'text-gray-300'
                                                 }`}
                                             />
                                         ))}
                                     </div>
                                     <p className="text-gray-700">{t.message}</p>
                                     <p className="text-gray-500 text-xs mt-1">
-                                        {new Date(t.created_at).toLocaleDateString('id-ID', { // Menggunakan 'id-ID' untuk format tanggal Indonesia
+                                        {new Date(t.created_at).toLocaleDateString('id-ID', { // Use 'id-ID' for Indonesian date format
                                             year: 'numeric',
                                             month: 'long',
                                             day: 'numeric'
@@ -427,159 +364,15 @@ export default function ProductDetail() {
 
             ---
 
-            {/* Service Form Modal */}
+            {/* Render the Service Form Modal Component */}
             {showServiceForm && product && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-                    <div className="bg-white rounded-lg max-w-md w-full max-h-[90vh] overflow-y-auto">
-                        <div className="flex justify-between items-center border-b p-4">
-                            <h3 className="font-bold text-lg">Layanan untuk {product.name}</h3>
-                            <button onClick={() => setShowServiceForm(false)} className="text-gray-500 hover:text-gray-700">
-                                &times;
-                            </button>
-                        </div>
-
-                        <div className="p-4 space-y-4">
-                            <div className="flex items-center gap-3">
-                                <img
-                                    src={product.img}
-                                    alt={product.name}
-                                    className="w-16 h-16 object-cover rounded-lg"
-                                />
-                                <div>
-                                    <p className="font-medium">{product.name}</p>
-                                    <p>Warna: {serviceDetails.selectedColor}</p>
-                                    <p className="text-[#f59e0b] font-semibold">${product.price.toFixed(2)}</p>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Kuantitas</label>
-                                <input
-                                    type="number"
-                                    name="quantity"
-                                    min="1"
-                                    max={product.stock}
-                                    value={serviceDetails.quantity}
-                                    onChange={handleInputChange}
-                                    className="w-full p-2 border rounded-md"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Jenis Layanan</label>
-                                <select
-                                    name="serviceType"
-                                    value={serviceDetails.serviceType}
-                                    onChange={handleInputChange}
-                                    className="w-full p-2 border rounded-md"
-                                >
-                                    <option value="basic">Dasar (+${servicePrices.basic})</option>
-                                    <option value="premium">Premium (+${servicePrices.premium})</option>
-                                    <option value="express">Ekspres (+${servicePrices.express})</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Prioritas Pengiriman</label>
-                                <select
-                                    name="urgency"
-                                    value={serviceDetails.urgency}
-                                    onChange={handleInputChange}
-                                    className="w-full p-2 border rounded-md"
-                                >
-                                    <option value="normal">Normal (1x)</option>
-                                    <option value="urgent">Mendesak (1.3x)</option>
-                                    <option value="veryUrgent">Sangat Mendesak (1.7x)</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium mb-1">Layanan Tambahan</label>
-                                <div className="space-y-2">
-                                    <label className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            name="addOns"
-                                            value="packaging"
-                                            checked={serviceDetails.addOns.includes('packaging')}
-                                            onChange={handleInputChange}
-                                        />
-                                        <FiPackage /> Kemasan Khusus (+${addOnPrices.packaging})
-                                    </label>
-                                    <label className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            name="addOns"
-                                            value="insurance"
-                                            checked={serviceDetails.addOns.includes('insurance')}
-                                            onChange={handleInputChange}
-                                        />
-                                        <FiShield /> Asuransi (+${addOnPrices.insurance})
-                                    </label>
-                                    <label className="flex items-center gap-2">
-                                        <input
-                                            type="checkbox"
-                                            name="addOns"
-                                            value="giftWrap"
-                                            checked={serviceDetails.addOns.includes('giftWrap')}
-                                            onChange={handleInputChange}
-                                        />
-                                        <FiGift /> Bungkus Kado (+${addOnPrices.giftWrap})
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div className="border-t pt-4">
-                                <h4 className="font-bold mb-2">Ringkasan Harga</h4>
-                                <div className="space-y-2">
-                                    <div className="flex justify-between">
-                                        <span>Harga Produk:</span>
-                                        <span>${product.price.toFixed(2)} × {serviceDetails.quantity}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Layanan {serviceDetails.serviceType}:</span>
-                                        <span>+${(servicePrices[serviceDetails.serviceType] * serviceDetails.quantity).toFixed(2)}</span>
-                                    </div>
-                                    {serviceDetails.addOns.map(addOn => (
-                                        <div key={addOn} className="flex justify-between pl-4">
-                                            <span>- {addOn}:</span>
-                                            <span>+${(addOnPrices[addOn] * serviceDetails.quantity).toFixed(2)}</span>
-                                        </div>
-                                    ))}
-                                    <div className="flex justify-between border-t pt-2">
-                                        <span>Subtotal:</span>
-                                        <span>${(product.price * serviceDetails.quantity +
-                                                    servicePrices[serviceDetails.serviceType] * serviceDetails.quantity +
-                                                    serviceDetails.addOns.reduce((total, addOn) => total + (addOnPrices[addOn] * serviceDetails.quantity), 0)).toFixed(2)}</span>
-                                    </div>
-                                    <div className="flex justify-between">
-                                        <span>Pengali ({serviceDetails.urgency}):</span>
-                                        <span>{urgencyMultiplier[serviceDetails.urgency]}x</span>
-                                    </div>
-                                    <div className="flex justify-between font-bold text-lg pt-2 border-t">
-                                        <span>Total:</span>
-                                        <span>${calculateTotalPrice().toFixed(2)}</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="border-t p-4 flex justify-end gap-2">
-                            <button
-                                onClick={() => setShowServiceForm(false)}
-                                className="px-4 py-2 border rounded-md hover:bg-gray-100"
-                            >
-                                Batal
-                            </button>
-                            <button
-                                onClick={confirmAddToCart}
-                                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center gap-2"
-                            >
-                                <FiShoppingCart /> Konfirmasi
-                            </button>
-                        </div>
-                    </div>
-                </div>
+                <ServiceFormModal
+                    product={product}
+                    serviceDetails={serviceDetails}
+                    setServiceDetails={setServiceDetails}
+                    showNotification={showNotification}
+                    onClose={handleCloseServiceForm}
+                />
             )}
         </div>
     );

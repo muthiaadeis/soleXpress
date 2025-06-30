@@ -1,5 +1,3 @@
-// src/pages/CareerDetail.jsx
-
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { careersAPI } from '../services/careersAPI'; // Import the API functions
@@ -15,7 +13,7 @@ export default function CareerDetail() {
       try {
         setIsLoading(true);
         setError(null);
-        
+
         // Convert ID to number and validate
         const jobIdNum = parseInt(id, 10);
         if (isNaN(jobIdNum)) {
@@ -24,7 +22,7 @@ export default function CareerDetail() {
 
         // Fetch job details from API
         const jobData = await careersAPI.getById(jobIdNum);
-        
+
         if (!jobData) {
           throw new Error("Maaf, lowongan karir tidak ditemukan.");
         }
@@ -81,7 +79,7 @@ export default function CareerDetail() {
   return (
     <div className="font-podkova p-6 bg-white rounded-xl shadow-lg max-w-3xl mx-auto my-8">
       <h1 className="text-3xl font-bold mb-4 text-green-900">{job.title}</h1>
-      
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-y-2 text-gray-700 mb-6 border-b pb-4">
         <p className="flex items-center">
           <span className="font-semibold w-24">Lokasi:</span> 📍 {job.location}
@@ -116,11 +114,14 @@ export default function CareerDetail() {
         </div>
       )}
 
+      {/* Menghapus tombol "Lamar Sekarang" */}
+      {/*
       <div className="mt-8 text-center">
         <button className="bg-green-600 text-white px-8 py-3 rounded-md hover:bg-green-700 transition-colors duration-300 text-lg font-semibold">
           Lamar Sekarang
         </button>
       </div>
+      */}
 
       <div className="mt-6 text-center">
         <Link to="/career" className="inline-block text-green-600 hover:underline">
